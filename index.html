@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock-Paper-Secissor</title>
+  <style>
+    
+    body{
+        background-color: rgb(25, 25, 25);
+        color: white;
+        margin-left: 36px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .title{
+        font-size: 35px;
+        font-weight: bold;
+    }
+    .result{
+        font-size: 35px;
+        font-weight: bold;
+    }
+    .image_png{
+       width: 50px;
+
+    }
+    .move-button{
+        background-color: transparent;
+        border: 3px solid white;
+        border-radius: 80px;
+        width: 100px;
+        height: 100px;
+        margin-right: 15px;
+        cursor: pointer;
+    }
+    .result{
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 50px;
+        
+    }
+    .movechosed{
+        font-weight: bold;
+    }
+    .wins{
+        margin-top: 60px;
+        font-weight: bolder;
+    }
+    .Reset-score-btn{
+        background-color: white;
+        color: black;
+        border: none;
+        font-size: 15px;
+        padding: 8px 14px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <p class="title">Rock Paper Secissors</p>
+  <button onclick="playGame('rock'); " class="move-button"><img src="rock-emoji.png" alt="Rock" class="image_png"> 
+   
+   </button>
+  <button onclick="playGame('paper');"class="move-button"> <img src="paper-emoji.png" alt="Paper" class="image_png"></button>
+  <button  onclick="playGame('scissor'); "class="move-button"> <img src="scissor-emoji.png" alt="scissors" class="image_png"></button>
+  <p class="result"></p>
+  <p class="movechosed">
+   
+  </p>
+  <p class="wins"></p>
+  
+  <button onclick="resetgame()" class="Reset-score-btn">Reset score</button>
+  <script>
+   let score = JSON.parse(localStorage.getItem('score')) || {
+    wins: 0,
+    losses: 0,
+    ties: 0};
+ 
+updateScore();
+
+function updateScore(){
+
+
+document.querySelector(".wins").innerHTML=`Wins: ${score.wins}, Loses: ${score.losses}, Ties: ${score.ties}`;
+}
+
+
+
+   
+   
+
+    function resetgame(){
+    score.wins=0;
+    score.losses=0;
+    score.ties=0;
+    localStorage.removeItem('score');
+    updateScore();
+    }
+
+
+
+    function playGame(playerMove)
+     {
+      let result='';
+    
+      const computerMove = pickComputerMove();
+      
+  
+      if (playerMove === 'scissor') {
+     
+        if (computerMove === 'rock') {
+          result = 'you lose!';
+        }
+        else if (computerMove === 'paper') {
+          result = 'you win';
+        }
+        else if (computerMove === 'scissor') {
+          result = 'tie';
+        }
+        
+      }
+      else if (playerMove === 'rock') {
+
+           
+        if (computerMove === 'rock') {
+          result = 'tie';
+        }
+        else if (computerMove === 'paper') {
+          result = 'you lose!';
+        }
+        else if (computerMove === 'scissor') {
+          result ='you win';
+        }
+        
+      }
+      else if (playerMove === 'paper') {
+          
+  
+        if (computerMove === 'rock') {
+          result = 'you win';
+        }
+        else if (computerMove === 'paper') {
+          result = 'tie';
+        }
+        else if (computerMove === 'scissor') {
+          result = 'you lose!';
+        }
+
+        
+      }
+      if (result === 'you win') {
+          score.wins++;
+        }
+        else if (result === 'you lose!') {
+          score.losses++;
+        }
+        else if (result === 'tie') {
+          score.ties++;
+        }
+      
+        localStorage.setItem('score' , JSON.stringify(score));
+        document.querySelector(".result").innerHTML=`${result}`;
+        document.querySelector(".movechosed").
+        innerHTML= ` You
+    <img src="${playerMove}-emoji.png" alt="" class="image_png">
+    <img src="${computerMove}-emoji.png" alt="" class="image_png">
+    Computer`;
+        updateScore();
+      
+    }
+    function pickComputerMove() { //Functions create a scope b/w the curly brackets means the variable created b/w function only exist in brackets
+     
+      const randomNumber = Math.random(); //Generates random number b/w 0 and 1
+      let computerMove='';
+
+      if (randomNumber >= 0 && randomNumber < 1/3) {
+        computerMove = 'rock';
+      }
+      else if (randomNumber >= 1/3 && randomNumber < 2/3) {
+        computerMove = 'paper';
+      }
+      else if (randomNumber >= 2/3 && randomNumber < 1) {
+        computerMove = 'scissor';
+      }
+
+
+      return computerMove;
+    }
+
+  </script>
+</body>
+
+</html>
